@@ -3,6 +3,7 @@
 """A class to store a measurement for one frequency, one rack."""
 import os.path
 from dataclasses import dataclass
+from pathlib import Path
 import numpy as np
 from scipy.optimize import curve_fit
 import pandas as pd
@@ -23,7 +24,7 @@ def model(xdata: np.ndarray,
 class Measurement:
     """Class to hold a measurement at a given frequency, for given rack."""
 
-    filepath: str
+    filepath: Path
     rack_name: str
 
     p_dbm_start: float = -30.
@@ -54,7 +55,7 @@ class Measurement:
 
     def _frequency_from_filename(self) -> float:
         """Get frequency in MHz from file name."""
-        filename = os.path.basename(self.filepath)
+        filename = self.filepath.name
         after_tiret = filename.split('-')[1]
         before_unit = after_tiret.split('M')[0]
         frequency_mhz = float(before_unit)

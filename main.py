@@ -21,5 +21,5 @@ all_racks.plot_as_measured()
 all_racks.plot_fit()
 
 # To save data
-out_file = "rack_calibration.txt"
-all_racks.save_as_file(os.path.join("data", out_file))
+out_file = Path('data', 'rack_calibration.txt')
+all_racks.save_as_file(out_file)

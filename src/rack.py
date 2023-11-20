@@ -45,7 +45,7 @@ class Rack:
         fitting_constants = np.vstack((a_opti, b_opti))
         return fitting_constants
 
-    def plot_as_measured(self) -> None:
+    def plot_as_measured(self, save_fig: bool = True) -> None:
         """Plot measured voltage, what was taken for fit."""
         fignum = self._number * 10
         fig = plt.figure(fignum)
@@ -59,7 +59,13 @@ class Rack:
         axe.legend()
         fig.suptitle(self.name)
 
-    def plot_fit(self) -> None:
+        if save_fig:
+            file_name = Path(self.folder.parent.parent,
+                             f"{self.name}_measured.png")
+            fig.set_size_inches(8, 6)
+            fig.savefig(file_name, dpi=100)
+
+    def plot_fit(self, save_fig: bool = True) -> None:
         """Plot the fit results."""
         fignum = self._number * 10 + 1
         fig = plt.figure(fignum)
@@ -72,3 +78,9 @@ class Rack:
             measurement.plot_fit(axe)
         axe.legend()
         fig.suptitle(self.name)
+
+        if save_fig:
+            file_name = Path(self.folder.parent.parent,
+                             f"{self.name}_fit.png")
+            fig.set_size_inches(8, 6)
+            fig.savefig(file_name, dpi=100)

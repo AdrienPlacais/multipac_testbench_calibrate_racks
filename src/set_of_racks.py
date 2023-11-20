@@ -21,16 +21,16 @@ class SetOfRacks(list):
         racks = sorted(racks, key=lambda r: int(r.name[1]))
         super().__init__(racks)
 
-    def plot_as_measured(self) -> None:
+    def plot_as_measured(self, save_fig: bool = True) -> None:
         """Plot all measured data."""
-        _ = [rack.plot_as_measured() for rack in self]
+        _ = [rack.plot_as_measured(save_fig) for rack in self]
 
-    def plot_fit(self) -> None:
+    def plot_fit(self, save_fig: bool = True) -> None:
         """Plot all fitted data."""
-        _ = [rack.plot_fit() for rack in self]
+        _ = [rack.plot_fit(save_fig) for rack in self]
 
     def save_as_file(self,
-                     filepath: str,
+                     filepath: Path,
                      delimiter: str = '\t') -> None:
         """Save the output in a single file.
 
