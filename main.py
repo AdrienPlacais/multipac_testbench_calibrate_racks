@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 """Treat all the rack data."""
 import os.path
+from pathlib import Path
 import matplotlib.pyplot as plt
+
 from src.set_of_racks import SetOfRacks
 plt.close('all')
 
 # Must contain all measurement files, in folders named "E1", "E2", etc
-base_folder = os.path.join("data", "measurements")
+base_folder = Path('data', 'measurements')
 
 all_racks = SetOfRacks(base_folder)
 

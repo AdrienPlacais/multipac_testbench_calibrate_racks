@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Load and store all rack data in the same object."""
 import os
+from pathlib import Path
 from src.rack import Rack
 
 
@@ -9,10 +10,11 @@ class SetOfRacks(list):
     """Save all racks data in a single object."""
 
     def __init__(self,
-                 base_folder: str,
+                 base_folder: Path,
                  ) -> None:
         """Create all the racks."""
-        folders = os.listdir(base_folder)
+        folders = [x for x in base_folder.iterdir() if x.is_dir()]
+
         racks = [Rack(name=folder,
                       folder=os.path.join(base_folder, folder))
                  for folder in folders]
