@@ -15,8 +15,8 @@ class SetOfRacks(list):
         """Create all the racks."""
         folders = [x for x in base_folder.iterdir() if x.is_dir()]
 
-        racks = [Rack(name=folder,
-                      folder=os.path.join(base_folder, folder))
+        racks = [Rack(name=folder.name,
+                      folder=folder.absolute())
                  for folder in folders]
         racks = sorted(racks, key=lambda r: int(r.name[1]))
         super().__init__(racks)
