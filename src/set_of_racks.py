@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Load and store all rack data in the same object."""
 import os
+from pathlib import Path
 from src.rack import Rack
 
 
@@ -9,26 +10,27 @@ class SetOfRacks(list):
     """Save all racks data in a single object."""
 
     def __init__(self,
-                 base_folder: str,
+                 base_folder: Path,
                  ) -> None:
         """Create all the racks."""
-        folders = os.listdir(base_folder)
-        racks = [Rack(name=folder,
-                      folder=os.path.join(base_folder, folder))
+        folders = [x for x in base_folder.iterdir() if x.is_dir()]
+
+        racks = [Rack(name=folder.name,
+                      folder=folder.absolute())
                  for folder in folders]
         racks = sorted(racks, key=lambda r: int(r.name[1]))
         super().__init__(racks)
 
-    def plot_as_measured(self) -> None:
+    def plot_as_measured(self, save_fig: bool = True) -> None:
         """Plot all measured data."""
-        _ = [rack.plot_as_measured() for rack in self]
+        _ = [rack.plot_as_measured(save_fig) for rack in self]
 
-    def plot_fit(self) -> None:
+    def plot_fit(self, save_fig: bool = True) -> None:
         """Plot all fitted data."""
-        _ = [rack.plot_fit() for rack in self]
+        _ = [rack.plot_fit(save_fig) for rack in self]
 
     def save_as_file(self,
-                     filepath: str,
+                     filepath: Path,
                      delimiter: str = '\t') -> None:
         """Save the output in a single file.
 

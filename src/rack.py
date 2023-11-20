@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Hold the measurements at all frequencies of a rack."""
+from pathlib import Path
 import matplotlib.pyplot as plt
 import os
 from dataclasses import dataclass
@@ -14,7 +15,7 @@ class Rack:
     """Holds all measurements on a single rack."""
 
     name: str
-    folder: str
+    folder: Path
 
     def __post_init__(self) -> None:
         """Auto load and fit."""
@@ -29,9 +30,9 @@ class Rack:
                    ) -> None:
         """Load all the files from the folder."""
         files = os.listdir(self.folder)
+        files = [x for x in self.folder.iterdir() if x.is_file()]
 
-        measurements = [Measurement(os.path.join(self.folder, filepath),
-                                    self.name)
+        measurements = [Measurement(filepath, self.name)
                         for filepath in files]
         self.measurements = sorted(measurements, key=lambda m: m.frequency_mhz)
         self.fitting_constants = self.get_fitting_constants(self.measurements)
@@ -44,7 +45,7 @@ class Rack:
         fitting_constants = np.vstack((a_opti, b_opti))
         return fitting_constants
 
-    def plot_as_measured(self) -> None:
+    def plot_as_measured(self, save_fig: bool = True) -> None:
         """Plot measured voltage, what was taken for fit."""
         fignum = self._number * 10
         fig = plt.figure(fignum)
@@ -58,7 +59,13 @@ class Rack:
         axe.legend()
         fig.suptitle(self.name)
 
-    def plot_fit(self) -> None:
+        if save_fig:
+            file_name = Path(self.folder.parent.parent,
+                             f"{self.name}_measured.png")
+            fig.set_size_inches(8, 6)
+            fig.savefig(file_name, dpi=100)
+
+    def plot_fit(self, save_fig: bool = True) -> None:
         """Plot the fit results."""
         fignum = self._number * 10 + 1
         fig = plt.figure(fignum)
@@ -71,3 +78,9 @@ class Rack:
             measurement.plot_fit(axe)
         axe.legend()
         fig.suptitle(self.name)
+
+        if save_fig:
+            file_name = Path(self.folder.parent.parent,
+                             f"{self.name}_fit.png")
+            fig.set_size_inches(8, 6)
+            fig.savefig(file_name, dpi=100)
