@@ -42,7 +42,8 @@ class Measurement:
         self._sample: np.ndarray
         self.voltage: np.ndarray
 
-        self._print_out_filename_and_info()
+        # for debug
+        # self._print_out_filename_and_info()
 
         self.load()
         self.a_opti, self.b_opti, self.r_squared = self.fit()
