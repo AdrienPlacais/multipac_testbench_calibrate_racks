@@ -4,7 +4,7 @@
 import os.path
 from dataclasses import dataclass
 import numpy as np
-from scipy.optimize import curve_fit
+from scipy.optimize import NonlinearConstraint, curve_fit
 import pandas as pd
 from matplotlib.axes._axes import Axes
 
@@ -45,6 +45,10 @@ class Measurement:
         self.load()
         self.a_opti, self.b_opti, self.r_squared = self.fit()
 
+    def __str__(self) -> str:
+        """Print the current object."""
+        return f"{self.rack_name} @ {self.frequency_mhz:3.0f}MHz"
+
     def _frequency_from_filename(self) -> float:
         """Get frequency in MHz from file name."""
         filename = os.path.basename(self.filepath)
@@ -55,8 +59,7 @@ class Measurement:
 
     def _print_out_filename_and_info(self) -> None:
         """Print info for debug."""
-        print(f"Loading file {self.filepath}, for rack {self.rack_name} "
-              f"@{self.frequency_mhz} MHz...")
+        print(f"Loading file {self.filepath}, for rack {str(self)}.")
 
     def _output(self) -> list[str]:
         """Return information to write in output file."""
@@ -95,12 +98,36 @@ class Measurement:
         self._full_voltage = data[column_name].to_numpy()
         self._full_sample = data["Sample index"].to_numpy()
         self._exclude_useless()
+        self._exclude_first_point_if_level_was_stuck_at_20dbm()
 
     def _exclude_useless(self) -> None:
         """Exclude data that are not interesting."""
         indexes_to_keep = self._useful_indexes()
         self.voltage = self._full_voltage[indexes_to_keep]
         self._sample = self._full_sample[indexes_to_keep]
+
+    def _exclude_first_point_if_level_was_stuck_at_20dbm(
+            self,
+            tol_percent: float = 10.) -> None:
+        """Exclude the first point from the fit if it is incorrect.
+
+        Sometimes, the first measure point is at -20dBm instead of the default
+        -30dBm. If first measured voltage is ``tol_percent`` higher (or more)
+        than the second, we consider that this error happened.
+
+        """
+        threshold_value = self.voltage[1] * (1. + 1e-2 * tol_percent)
+        if self.voltage[0] < threshold_value:
+            return
+
+        print(f"Warning in {str(self)}: measure point @ 30dBm too high, "
+              "so we ignore it for the fit. More info in "
+              "src/single_measurement.py, "
+              "exclude_first_point_if_level_was_stuck_at_20dbm method.")
+        self.voltage = self.voltage[1:]
+        self._sample = self._sample[1:]
+        self.p_dbm = self.p_dbm[1:]
+        return
 
     def _useful_indexes(self) -> range:
         """Determine what are the measurements we need."""
