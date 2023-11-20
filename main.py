@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from src.set_of_racks import SetOfRacks
 plt.close('all')
-
+5
 # Must contain all measurement files, in folders named "E1", "E2", etc
 base_folder = Path('data', 'measurements')
 
