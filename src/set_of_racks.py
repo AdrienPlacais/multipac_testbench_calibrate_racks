@@ -54,6 +54,7 @@ class SetOfRacks(list):
         header = f"""# File created on {datetime.now()}.
 # Created with "multipac_testbench_calibrate_rf_racks" Python script, available at:
 # https://gitlab.in2p3.fr/multipactor/calibrate_rf_racks.git
+# https://github.com/AdrienPlacais/multipac_testbench_calibrate_racks
 #
 # For any question/remark: placais@lpsc.in2p3.fr
 #

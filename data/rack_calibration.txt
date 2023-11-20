@@ -1,6 +1,7 @@
-# File created on 2023-11-20 16:58:50.826634.
-# Created with "calibrate_rf_racks_multipac" Python script, available at:
+# File created on 2023-11-20 17:20:18.006282.
+# Created with "multipac_testbench_calibrate_rf_racks" Python script, available at:
 # https://gitlab.in2p3.fr/multipactor/calibrate_rf_racks.git
+# https://github.com/AdrienPlacais/multipac_testbench_calibrate_racks
 #
 # For any question/remark: placais@lpsc.in2p3.fr
 #
