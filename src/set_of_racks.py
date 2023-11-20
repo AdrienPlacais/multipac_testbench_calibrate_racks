@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Load and store all rack data in the same object."""
-import os
+from datetime import datetime
 from pathlib import Path
 from src.rack import Rack
 
@@ -42,8 +42,20 @@ class SetOfRacks(list):
             for rack in self:
                 for measurement in rack.measurements:
                     if not wrote_header:
+                        f.write(self._header_for_file())
                         f.write(measurement.to_write(delimiter,
                                                      header=True))
                         wrote_header = True
 
                     f.write(measurement.to_write(delimiter))
+
+    def _header_for_file(self) -> str:
+        """Generate a header."""
+        header = f"""# File created on {datetime.now()}.
+# Created with "multipac_testbench_calibrate_rf_racks" Python script, available at:
+# https://gitlab.in2p3.fr/multipactor/calibrate_rf_racks.git
+#
+# For any question/remark: placais@lpsc.in2p3.fr
+#
+"""
+        return header
