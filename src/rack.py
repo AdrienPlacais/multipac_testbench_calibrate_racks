@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Hold the measurements at all frequencies of a rack."""
+from pathlib import Path
 import matplotlib.pyplot as plt
 import os
 from dataclasses import dataclass
@@ -14,7 +15,7 @@ class Rack:
     """Holds all measurements on a single rack."""
 
     name: str
-    folder: str
+    folder: Path
 
     def __post_init__(self) -> None:
         """Auto load and fit."""
@@ -29,9 +30,9 @@ class Rack:
                    ) -> None:
         """Load all the files from the folder."""
         files = os.listdir(self.folder)
+        files = [x for x in self.folder.iterdir() if x.is_file()]
 
-        measurements = [Measurement(os.path.join(self.folder, filepath),
-                                    self.name)
+        measurements = [Measurement(filepath, self.name)
                         for filepath in files]
         self.measurements = sorted(measurements, key=lambda m: m.frequency_mhz)
         self.fitting_constants = self.get_fitting_constants(self.measurements)
