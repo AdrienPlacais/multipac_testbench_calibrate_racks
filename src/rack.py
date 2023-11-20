@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Hold the measurements at all frequencies of a rack."""
-from pathlib import Path
-import matplotlib.pyplot as plt
 import os
+from pathlib import Path
 from dataclasses import dataclass
+import matplotlib.pyplot as plt
 import numpy as np
 
 from src.single_measurement import Measurement

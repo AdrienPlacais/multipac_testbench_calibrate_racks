@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """A class to store a measurement for one frequency, one rack."""
-import os.path
 from dataclasses import dataclass
 from pathlib import Path
 import numpy as np
