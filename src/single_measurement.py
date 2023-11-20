@@ -4,9 +4,11 @@
 import os.path
 from dataclasses import dataclass
 import numpy as np
-from scipy.optimize import NonlinearConstraint, curve_fit
+from scipy.optimize import curve_fit
 import pandas as pd
 from matplotlib.axes._axes import Axes
+
+from src.helper import printc
 
 
 def model(xdata: np.ndarray,
@@ -120,10 +122,11 @@ class Measurement:
         if self.voltage[0] < threshold_value:
             return
 
-        print(f"Warning in {str(self)}: measure point @ 30dBm too high, "
-              "so we ignore it for the fit. More info in "
-              "src/single_measurement.py, "
-              "exclude_first_point_if_level_was_stuck_at_20dbm method.")
+        printc(f"Warning in {str(self)}: measure point @ 30dBm too high, "
+               "so we ignore it for the fit. More info in "
+               "src/single_measurement.py, "
+               "exclude_first_point_if_level_was_stuck_at_20dbm method.",
+               color='cyan')
         self.voltage = self.voltage[1:]
         self._sample = self._sample[1:]
         self.p_dbm = self.p_dbm[1:]
