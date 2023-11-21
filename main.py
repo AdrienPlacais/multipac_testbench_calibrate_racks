@@ -9,8 +9,8 @@ plt.close('all')
 
 # Must contain all measurement files, in folders named "E1", "E2", etc
 base_folder = Path('data', 'measurements')
-
-all_racks = SetOfRacks(base_folder)
+out_folder = Path('data', 'results')
+all_racks = SetOfRacks(base_folder, out_folder)
 
 # To plot the measurements, with an highlight on the data retained for the
 # linear curve fitting
@@ -20,5 +20,4 @@ all_racks.plot_as_measured()
 all_racks.plot_fit()
 
 # To save data
-out_file = Path('data', 'rack_calibration.txt')
-all_racks.save_as_file(out_file)
+all_racks.save_as_file()

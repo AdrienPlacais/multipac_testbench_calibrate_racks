@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Load and store all rack data in the same object."""
-from datetime import datetime
 from pathlib import Path
 from src.rack import Rack
 
@@ -11,12 +10,14 @@ class SetOfRacks(list):
 
     def __init__(self,
                  base_folder: Path,
+                 out_folder: Path,
                  ) -> None:
         """Create all the racks."""
         folders = [x for x in base_folder.iterdir() if x.is_dir()]
 
         racks = [Rack(name=folder.name,
-                      folder=folder.absolute())
+                      folder=folder.absolute(),
+                      out_folder=out_folder.absolute())
                  for folder in folders]
         racks = sorted(racks, key=lambda r: int(r.name[1]))
         super().__init__(racks)
@@ -29,34 +30,7 @@ class SetOfRacks(list):
         """Plot all fitted data."""
         _ = [rack.plot_fit(save_fig) for rack in self]
 
-    def save_as_file(self,
-                     filepath: Path,
-                     delimiter: str = '\t') -> None:
-        """Save the output in a single file.
-
-        Rack | Freq [MHz] | a | b
-
-        """
-        wrote_header = False
-        with open(filepath, 'w', encoding='utf-8') as f:
-            for rack in self:
-                for measurement in rack.measurements:
-                    if not wrote_header:
-                        f.write(self._header_for_file())
-                        f.write(measurement.to_write(delimiter,
-                                                     header=True))
-                        wrote_header = True
-
-                    f.write(measurement.to_write(delimiter))
-
-    def _header_for_file(self) -> str:
-        """Generate a header."""
-        header = f"""# File created on {datetime.now()}.
-# Created with "multipac_testbench_calibrate_rf_racks" Python script, available at:
-# https://gitlab.in2p3.fr/multipactor/calibrate_rf_racks.git
-# https://github.com/AdrienPlacais/multipac_testbench_calibrate_racks
-#
-# For any question/remark: placais@lpsc.in2p3.fr
-#
-"""
-        return header
+    def save_as_file(self, delimiter: str = '\t') -> None:
+        """Save the fitting parameters."""
+        for rack in self:
+            rack.save_as_file(delimiter=delimiter)

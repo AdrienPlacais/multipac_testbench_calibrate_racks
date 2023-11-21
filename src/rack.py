@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Hold the measurements at all frequencies of a rack."""
 import os
+from datetime import datetime
 from pathlib import Path
 from dataclasses import dataclass
 import matplotlib.pyplot as plt
@@ -16,6 +17,7 @@ class Rack:
 
     name: str
     folder: Path
+    out_folder: Path
 
     def __post_init__(self) -> None:
         """Auto load and fit."""
@@ -60,8 +62,7 @@ class Rack:
         fig.suptitle(self.name)
 
         if save_fig:
-            file_name = Path(self.folder.parent.parent,
-                             f"{self.name}_measured.png")
+            file_name = Path(self.out_folder, f"{self.name}_measured.png")
             fig.set_size_inches(8, 6)
             fig.savefig(file_name, dpi=100)
 
@@ -80,7 +81,36 @@ class Rack:
         fig.suptitle(self.name)
 
         if save_fig:
-            file_name = Path(self.folder.parent.parent,
-                             f"{self.name}_fit.png")
+            file_name = Path(self.out_folder, f"{self.name}_fit.png")
             fig.set_size_inches(8, 6)
             fig.savefig(file_name, dpi=100)
+
+    def save_as_file(self,
+                     delimiter: str = '\t') -> None:
+        """Save the fitting parameters.
+
+        Rack | Freq [MHz] | a | b
+
+        """
+        wrote_header = False
+        filepath = Path(self.out_folder, f"{self.name}_fit_calibration.csv")
+        with open(filepath, 'w', encoding='utf-8') as f:
+            for measurement in self.measurements:
+                if not wrote_header:
+                    f.write(Rack._header_for_file())
+                    f.write(measurement.to_write(delimiter, header=True))
+                    wrote_header = True
+                f.write(measurement.to_write(delimiter))
+
+    @classmethod
+    def _header_for_file(cls) -> str:
+        """Generate a header."""
+        header = f"""# File created on {datetime.now()}.
+# Created with "multipac_testbench_calibrate_rf_racks" Python script, available at:
+# https://gitlab.in2p3.fr/multipactor/calibrate_rf_racks.git
+# https://github.com/AdrienPlacais/multipac_testbench_calibrate_racks
+#
+# For any question/remark: placais@lpsc.in2p3.fr
+#
+"""
+        return header
