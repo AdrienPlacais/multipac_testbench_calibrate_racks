@@ -72,7 +72,7 @@ class Rack:
         fig = plt.figure(fignum)
         axe = fig.add_subplot(111)
 
-        axe.set_xlabel(r"Voltage $[V]$")
+        axe.set_xlabel(r"Measured voltage $[V]$")
         axe.set_ylabel(r"RF power $[dBm]$")
         axe.grid(True)
         for measurement in self.measurements:

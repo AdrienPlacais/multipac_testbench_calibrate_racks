@@ -141,7 +141,7 @@ class Measurement:
 
     def fit(self) -> tuple[float, float, float]:
         """Perform the fit."""
-        xdata, ydata = self.p_dbm, self.voltage
+        xdata, ydata = self.voltage, self.p_dbm
         popt, _ = curve_fit(model, xdata=xdata, ydata=ydata)
         a_opti, b_opti = popt
         residuals = ydata - model(xdata, *popt)
@@ -152,13 +152,13 @@ class Measurement:
 
     def plot_fit(self, axe: Axes) -> None:
         """Plot data."""
-        line1, = axe.plot(self.p_dbm,
-                          self.voltage,
+        line1, = axe.plot(self.voltage,
+                          self.p_dbm,
                           label=f"{self.rack_name} @{self.frequency_mhz}MHz")
         label = f"a = {self.a_opti:3.2f}, b = {self.b_opti:3.2f}, "
         label += f"R2 = {self.r_squared:3.4f}"
-        axe.plot(self.p_dbm,
-                 model(self.p_dbm, self.a_opti, self.b_opti),
+        axe.plot(self.voltage,
+                 model(self.voltage, self.a_opti, self.b_opti),
                  color=line1.get_color(),
                  ls='--',
                  label=label,
