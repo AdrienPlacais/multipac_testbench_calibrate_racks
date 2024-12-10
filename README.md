@@ -8,3 +8,8 @@ The measured voltage is expected to be in the `'NI9205_Arc2'` column, but this c
 
 From the folder where `main.py` is stored, just run `python main.py` and you should be good.
 If you want the plots to appear, you must run the script from your IDE (Spyder, VSCode, ...)
+
+# TODO
+- [ ] Remove illegal quoting in results file
+- [ ] Cleaner installation instructions
+- [ ] Complete documentation
