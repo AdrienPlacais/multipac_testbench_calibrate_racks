@@ -1,19 +1,19 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Hold the measurements at all frequencies of a rack."""
+
 import os
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from dataclasses import dataclass
+
 import matplotlib.pyplot as plt
 import numpy as np
-
-from src.single_measurement import Measurement
+from multipac_testbench_calibrate_racks.single_measurement import Measurement
+from numpy.typing import NDArray
 
 
 @dataclass
 class Rack:
-    """Holds all measurements on a single rack."""
+    """Hold measured voltage for power ramps at every frequency."""
 
     name: str
     folder: Path
@@ -21,26 +21,25 @@ class Rack:
 
     def __post_init__(self) -> None:
         """Auto load and fit."""
-        self.fitting_constants: np.ndarray
+        self.fitting_constants: NDArray
         self.measurements: list[Measurement]
 
         self._number = int(self.name[1])
 
         self.load_files()
 
-    def load_files(self,
-                   ) -> None:
+    def load_files(self) -> None:
         """Load all the files from the folder."""
         files = os.listdir(self.folder)
         files = [x for x in self.folder.iterdir() if x.is_file()]
 
-        measurements = [Measurement(filepath, self.name)
-                        for filepath in files]
+        measurements = [Measurement(filepath, self.name) for filepath in files]
         self.measurements = sorted(measurements, key=lambda m: m.frequency_mhz)
         self.fitting_constants = self.get_fitting_constants(self.measurements)
 
-    def get_fitting_constants(self, measurements: list[Measurement]
-                              ) -> np.ndarray:
+    def get_fitting_constants(
+        self, measurements: list[Measurement]
+    ) -> NDArray:
         """Get all fitting constants for a single rack."""
         a_opti = [measure.a_opti for measure in measurements]
         b_opti = [measure.b_opti for measure in measurements]
@@ -85,8 +84,7 @@ class Rack:
             fig.set_size_inches(8, 6)
             fig.savefig(file_name, dpi=100)
 
-    def save_as_file(self,
-                     delimiter: str = '\t') -> None:
+    def save_as_file(self, delimiter: str = "\t") -> None:
         """Save the fitting parameters.
 
         Rack | Freq [MHz] | a | b
@@ -94,7 +92,7 @@ class Rack:
         """
         wrote_header = False
         filepath = Path(self.out_folder, f"{self.name}_fit_calibration.csv")
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             for measurement in self.measurements:
                 if not wrote_header:
                     f.write(Rack._header_for_file())

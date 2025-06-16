@@ -1,0 +1,71 @@
+[project]
+authors = [{ name = "Adrien Plaçais", email = "placais@lpsc.in2p3.fr" }]
+classifiers = [
+   "Development Status :: 3 - Alpha",
+   "Intended Audience :: Science/Research",
+   "License :: OSI Approved :: MIT License",
+   "Operating System :: OS Independent",
+   "Programming Language :: Python :: 3.12",
+   "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+   "matplotlib>=3.9.1, <4",
+   "numpy>=2, <3",
+   "pandas>=2.2, <3",
+   "pre-commit>=4, <5",
+   "scipy>=1.15,<2",
+]
+description = "Calibrate MULTIPAC RF racks."
+dynamic = ["version"]
+keywords = ["calibration", "multipactor"]
+name = "multipac_testbench_calibrate_racks"
+readme = "README.md"
+requires-python = ">=3.11"
+
+[project.optional-dependencies]
+docs = [
+   "myst-parser>=4, <5",
+   "nbsphinx>=0.9.6, <1",
+   "sphinx-autodoc-typehints>=3.0.1, <4",
+   "sphinx-rtd-theme>=3, <4",
+   "sphinx-tabs>=3.4,<4",
+   "sphinxcontrib-bibtex>=2.6,<3",
+]
+test = ["pytest>=8.3.2, <9", "pytest-mock>=3.14, <4", "nbmake>=1.5.4,<2"]
+
+[project.scripts]
+
+[project.urls]
+Homepage = "https://github.com/AdrienPlacais/multipac_testbench_calibrate_racks"
+
+[tool.black]
+line-length = 79
+target-version = ["py312"]
+
+[tool.isort]
+profile = "black"
+src_paths = ["./multipac_testbench_calibrate_racks/"]
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib", "--strict-markers"]
+filterwarnings = ["ignore:.*cKDTree.*:DeprecationWarning"]
+markers = []
+minversion = "6.0"
+testpaths = ["tests"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages]
+find = { where = ["src"] }
+
+[tool.setuptools_scm]
+
+[tool.cibuildwheel]
+build-verbosity = 1
+test-command = 'pytest {project}/tests -m "not implementation and not slow"'
+test-extras = "test"
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=64", "setuptools-scm>=8, <9"]
