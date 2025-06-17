@@ -43,6 +43,8 @@ class Measurement:
     p_dbm_start: float = -30.0
     p_dbm_end: float = 6.0
     n_p_dbm_points: int = 37
+    sep: str = "\t"
+    decimal: str = ","
 
     def __post_init__(self):
         """Auto load and fit."""
@@ -59,7 +61,7 @@ class Measurement:
         # for debug
         # self._print_out_filename_and_info()
 
-        self.load()
+        self._load()
         self.a_opti, self.b_opti, self.r_squared = self.fit()
 
     def __str__(self) -> str:
@@ -105,12 +107,12 @@ class Measurement:
             return delimiter.join(self._output())
         return delimiter.join(Measurement._output_header())
 
-    def load(self, column_name: str = "NI9205_Arc2") -> None:
+    def _load(self, column_name: str = "NI9205_Arc2") -> None:
         """Load the file."""
         data = pd.read_csv(
             self.filepath,
-            sep="\t",
-            decimal=",",
+            sep=self.sep,
+            decimal=self.decimal,
             usecols=["Sample index", column_name],
         )
         self._full_voltage = data[column_name].to_numpy()

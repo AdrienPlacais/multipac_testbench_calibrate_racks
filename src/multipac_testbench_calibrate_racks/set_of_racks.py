@@ -8,7 +8,13 @@ from multipac_testbench_calibrate_racks.rack import Rack
 class SetOfRacks(list):
     """Hold measured voltage for power ramps at every freq, every rack."""
 
-    def __init__(self, base_folder: Path, out_folder: Path) -> None:
+    def __init__(
+        self,
+        base_folder: Path,
+        out_folder: Path,
+        sep: str = "\t",
+        decimal: str = ",",
+    ) -> None:
         """Create all the racks.
 
         Expected file stucture:
@@ -34,6 +40,8 @@ class SetOfRacks(list):
                 name=folder.name,
                 folder=folder.absolute(),
                 out_folder=out_folder.absolute(),
+                sep=sep,
+                decimal=decimal,
             )
             for folder in folders
         ]

@@ -18,6 +18,8 @@ class Rack:
     name: str
     folder: Path
     out_folder: Path
+    sep: str = "\t"
+    decimal: str = ","
 
     def __post_init__(self) -> None:
         """Auto load and fit."""
@@ -26,18 +28,23 @@ class Rack:
 
         self._number = int(self.name[1])
 
-        self.load_files()
+        self._load_files()
 
-    def load_files(self) -> None:
+    def _load_files(self) -> None:
         """Load all the files from the folder."""
         files = os.listdir(self.folder)
         files = [x for x in self.folder.iterdir() if x.is_file()]
 
-        measurements = [Measurement(filepath, self.name) for filepath in files]
+        measurements = [
+            Measurement(
+                filepath, self.name, sep=self.sep, decimal=self.decimal
+            )
+            for filepath in files
+        ]
         self.measurements = sorted(measurements, key=lambda m: m.frequency_mhz)
-        self.fitting_constants = self.get_fitting_constants(self.measurements)
+        self.fitting_constants = self._get_fitting_constants(self.measurements)
 
-    def get_fitting_constants(
+    def _get_fitting_constants(
         self, measurements: list[Measurement]
     ) -> NDArray:
         """Get all fitting constants for a single rack."""
