@@ -12,7 +12,23 @@ from scipy.optimize import curve_fit
 
 
 def model(xdata: NDArray, a: float, b: float) -> np.ndarray:
-    """Linear model."""
+    """Compute forward power in dBm for given acquisition voltage in [0, 10V].
+
+    Parameters
+    ----------
+    xdata :
+        Acquisition voltage at the output of the RF rack, in [0, 10V].
+    a :
+        Fitting slope in dBm / V.
+    b :
+        Fitting offset in dBm.
+
+    Returns
+    -------
+    NDArray :
+        Power at the entry of the RF rack, in dBm.
+
+    """
     ydata = a * xdata + b
     return ydata
 
