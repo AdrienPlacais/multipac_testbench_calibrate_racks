@@ -9,7 +9,24 @@ class SetOfRacks(list):
     """Hold measured voltage for power ramps at every freq, every rack."""
 
     def __init__(self, base_folder: Path, out_folder: Path) -> None:
-        """Create all the racks."""
+        """Create all the racks.
+
+        Expected file stucture:
+            base_folder/
+            ├── E1
+            │   ├── MesureE1-100MHz.txt   # holds measured in ``NI9205_Arc2``
+            │   ├── MesureE1-120MHz.txt
+            │   ├── MesureE1-140MHz.txt
+            │   ├── MesureE1-160MHz.txt
+            │   ├── MesureE1-180MHz.txt
+            │   ├── MesureE1-80MHz.txt
+            │   └── MesureE1-88MHz.txt
+            ├── E2
+            │   ├── MesureE2-100MHz.txt
+            ... etc
+                └── MesureE7-88MHz.txt
+
+        """
         folders = [x for x in base_folder.iterdir() if x.is_dir()]
 
         racks = [
