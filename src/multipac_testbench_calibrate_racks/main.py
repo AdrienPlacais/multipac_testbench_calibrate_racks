@@ -9,8 +9,8 @@ plt.close("all")
 
 if __name__ == "__main__":
     # Must contain all measurement files, in folders named "E1", "E2", etc
-    base_folder = Path("..", "..", "data", "measurements")
-    out_folder = Path("..", "..", "data", "results")
+    base_folder = Path("../../data/measurements")
+    out_folder = Path("../../data/results")
     all_racks = SetOfRacks(base_folder, out_folder)
 
     # To plot the measurements, with an highlight on the data retained for the
