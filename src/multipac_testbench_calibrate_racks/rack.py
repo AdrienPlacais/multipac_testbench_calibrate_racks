@@ -7,6 +7,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+from multipac_testbench_calibrate_racks.helper import printc
 from multipac_testbench_calibrate_racks.single_measurement import Measurement
 from numpy.typing import NDArray
 
@@ -32,6 +33,7 @@ class Rack:
 
     def _load_files(self) -> None:
         """Load all the files from the folder."""
+        printc(f"Loading {self.name} files", color="cyan")
         files = os.listdir(self.folder)
         files = [x for x in self.folder.iterdir() if x.is_file()]
 

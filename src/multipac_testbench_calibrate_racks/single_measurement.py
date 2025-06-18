@@ -109,6 +109,7 @@ class Measurement:
 
     def _load(self, column_name: str = "NI9205_Arc2") -> None:
         """Load the file."""
+        printc(f"Loading {self.frequency_mhz}")
         data = pd.read_csv(
             self.filepath,
             sep=self.sep,
