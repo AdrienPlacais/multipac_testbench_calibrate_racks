@@ -1,7 +1,11 @@
 """Define general-use functions."""
 
+from typing import Literal
 
-def printc(message: str, color="red") -> None:
+COLORS_T = Literal["red", "blue", "green", "magenta", "cyan"]
+
+
+def printc(message: str, color: COLORS_T = "red") -> None:
     """Print colored message."""
     normal_code = "\x1b[0m"
     escape_code = normal_code
