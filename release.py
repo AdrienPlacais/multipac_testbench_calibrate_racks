@@ -109,7 +109,7 @@ def update_files(version: str) -> None:
 
     """
     today = date.today().isoformat()
-    _update_citation(version, today)
+    # _update_citation(version, today)
     _update_changelog(version, today)
 
 
@@ -321,7 +321,7 @@ def main() -> None:
         print("Operation aborted due to a CHANGELOG.md error.")
         sys.exit(1)
     ask_user_to_continue()
-    # update_files(version)
+    update_files(version)
 
     if has_staged_changes():
         run(["git", "commit", "-m", f"Prepare release {tag}"])
