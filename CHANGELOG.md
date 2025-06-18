@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [0.1.x]
 
+## [0.1.2] - 2025-06-18
+
+### Changed
+
+- Last calibration files for CEA power racks
+
 ## [0.1.1] - 2025-06-18
 
 ### Added
+
 - pre-commit configuration.
 
 

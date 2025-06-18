@@ -113,7 +113,7 @@ class Rack:
     def _header_for_file(cls) -> str:
         """Generate a header."""
         header = f"""# File created on {datetime.now()}.
-# Created with "multipac_testbench_calibrate_rf_racks" Python script, available at:
+# Created with `multipac_testbench_calibrate_rf_racks` Python script, available at:
 # https://github.com/AdrienPlacais/multipac_testbench_calibrate_racks
 #
 # For any question/remark: placais@lpsc.in2p3.fr
