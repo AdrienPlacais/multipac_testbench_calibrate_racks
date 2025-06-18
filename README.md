@@ -25,8 +25,8 @@ pip install -e .
 Plug signal generator to input of RF rack, plug 0/10V output to the Arc2 output, perform power sweeps.
 
 > [!INFO]
-> In version 0.1.0 and earlier, power sweep had to be -30dBm to 6dBm, one point per dBm.
-> In version 0.1.1 and later, power has to be stored in `NI9205_dBm` columns.
+> In versions 0.1.x and earlier, power sweep had to be -30dBm to 6dBm, one point per dBm.
+> In versions 0.2.0 and later, power has to be stored in `NI9205_dBm` columns.
 
 Expected file structure:
 
@@ -34,7 +34,7 @@ Expected file structure:
 base_folder/
 ├── E1
 │   ├── MesureE1-100MHz.txt   # holds measured voltage in ``NI9205_Arc2``
-│   ├── MesureE1-120MHz.txt   # 0.1.1 and later, also input power in ``NI9205_dBm``
+│   ├── MesureE1-120MHz.txt   # 0.2.0 and later, also input power in ``NI9205_dBm``
 │   ├── MesureE1-140MHz.txt
 │   ├── MesureE1-160MHz.txt
 │   ├── MesureE1-180MHz.txt
