@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Treat all the rack data."""
+
 from pathlib import Path
 
 import matplotlib.pyplot as plt
